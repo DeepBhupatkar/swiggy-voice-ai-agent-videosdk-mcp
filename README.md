@@ -36,47 +36,6 @@ A real-world demonstration of how the [VideoSDK AI Agent Framework](https://gith
 
 ![VideoSDK AI Agents High Level Architecture](https://assets.videosdk.live/images/agent-architecture.png)
 
-### End-to-End Flow
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                     User Device                                  │
-│  Browser (Playground) │ Phone (SIP) │ WhatsApp                   │
-└───────────┬──────────────────┬───────────────┬───────────────────┘
-            │     WebRTC       │    SIP/RTP    │   Meta SIP
-            ▼                  ▼               ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                    VideoSDK Cloud                                 │
-│         Room Management │ Media Routing │ Telephony Gateway       │
-└─────────────────────────────┬────────────────────────────────────┘
-                              │
-                              ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                    Agent Worker (this project)                    │
-│                                                                  │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │  Pipeline                                                 │   │
-│  │                                                           │   │
-│  │  Deepgram STT ──► Google Gemini LLM ──► Cartesia TTS    │   │
-│  │       OR           (tool calls)            OR             │   │
-│  │  Gemini Native Audio (single model, lowest latency)       │   │
-│  └──────────────────────┬────────────────────────────────────┘   │
-│                         │                                        │
-│  ┌──────────────────────▼────────────────────────────────────┐   │
-│  │  SwiggyMCPServer (unified provider)                        │   │
-│  │  OAuth 2.0 PKCE │ Tool Dedup │ Schema Sanitization         │   │
-│  └───────┬──────────────┬─────────────────┬──────────────────┘   │
-└──────────┼──────────────┼─────────────────┼──────────────────────┘
-           │              │                 │
-     HTTPS + OAuth   HTTPS + OAuth    HTTPS + OAuth
-           │              │                 │
-   ┌───────▼──────┐ ┌────▼───────┐ ┌───────▼────────┐
-   │ Swiggy Food  │ │ Instamart  │ │   Dineout      │
-   │  13 tools    │ │  8 tools   │ │   7 tools      │
-   │ /food        │ │ /im        │ │   /dineout     │
-   └──────────────┘ └────────────┘ └────────────────┘
-```
-
 ### How It Works
 
 1. **User speaks** into the Playground (browser), phone, or WhatsApp
@@ -85,7 +44,7 @@ A real-world demonstration of how the [VideoSDK AI Agent Framework](https://gith
 4. **LLM** understands intent and calls the appropriate Swiggy MCP tool
 5. **SwiggyMCPServer** routes the tool call to the correct Swiggy endpoint with OAuth
 6. **Real data** comes back (restaurants, menus, prices, cart status)
-7. **LLM** formulates a natural response, which is spoken back to the user
+7. **LLM** formulates a natural response, which is spoken back to the user via TTS.
 
 ---
 
