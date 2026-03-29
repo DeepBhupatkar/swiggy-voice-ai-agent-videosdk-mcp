@@ -20,7 +20,7 @@ import logging
 from videosdk.agents import (
     Agent,
     AgentSession,
-    RealTimePipeline,
+    Pipeline,
     JobContext,
     RoomOptions,
     WorkerJob,
@@ -54,14 +54,14 @@ class SwiggyPhoneAgent(Agent):
 
 async def entrypoint(ctx: JobContext):
     model = GeminiRealtime(
-        model="gemini-2.5-flash-native-audio-preview-09-2025",
+        model="gemini-3.1-flash-live-preview",
         config=GeminiLiveConfig(
             voice="Leda",
             response_modalities=["AUDIO"],
         ),
     )
 
-    pipeline = RealTimePipeline(model=model)
+    pipeline = Pipeline(llm=model)
     agent = SwiggyPhoneAgent()
 
     session = AgentSession(
@@ -69,13 +69,10 @@ async def entrypoint(ctx: JobContext):
         pipeline=pipeline,
     )
 
-    try:
-        await ctx.connect()
-        await session.start()
-        await asyncio.Event().wait()
-    finally:
-        await session.close()
-        await ctx.shutdown()
+    await session.start(
+        wait_for_participant=True,
+        run_until_shutdown=True,
+    )
 
 
 def make_context() -> JobContext:

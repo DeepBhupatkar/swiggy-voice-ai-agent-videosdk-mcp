@@ -12,11 +12,10 @@ Then open: https://playground.videosdk.live
 from videosdk.agents import (
     Agent,
     AgentSession,
-    CascadingPipeline,
+    Pipeline,
     JobContext,
     RoomOptions,
-    WorkerJob,
-    ConversationFlow,
+    WorkerJob
 )
 from videosdk.plugins.google import GoogleLLM
 from videosdk.plugins.deepgram import DeepgramSTT
@@ -54,9 +53,8 @@ class SwiggyVoiceAgent(Agent):
 
 async def entrypoint(ctx: JobContext):
     agent = SwiggyVoiceAgent()
-    conversation_flow = ConversationFlow(agent)
 
-    pipeline = CascadingPipeline(
+    pipeline = Pipeline(
         stt=DeepgramSTT(),
         llm=GoogleLLM(),
         tts=CartesiaTTS(),
@@ -67,7 +65,6 @@ async def entrypoint(ctx: JobContext):
     session = AgentSession(
         agent=agent,
         pipeline=pipeline,
-        conversation_flow=conversation_flow,
     )
 
     await session.start(

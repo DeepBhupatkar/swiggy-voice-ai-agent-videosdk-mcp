@@ -12,7 +12,7 @@ Then open: https://playground.videosdk.live
 from videosdk.agents import (
     Agent,
     AgentSession,
-    RealTimePipeline,
+    Pipeline,
     JobContext,
     RoomOptions,
     WorkerJob,
@@ -47,14 +47,14 @@ class SwiggyVoiceAgent(Agent):
 
 async def entrypoint(ctx: JobContext):
     model = GeminiRealtime(
-        model="gemini-2.5-flash-native-audio-preview-09-2025",
+        model="gemini-3.1-flash-live-preview",
         config=GeminiLiveConfig(
             voice="Leda",
             response_modalities=["AUDIO"],
         ),
     )
 
-    pipeline = RealTimePipeline(model=model)
+    pipeline = Pipeline(llm=model)
     agent = SwiggyVoiceAgent()
 
     session = AgentSession(
