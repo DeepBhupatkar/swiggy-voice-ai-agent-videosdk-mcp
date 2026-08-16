@@ -1,8 +1,7 @@
-videosdk-agents>=1.0.9
-videosdk-plugins-google>=1.0.9
-videosdk-plugins-deepgram>=1.0.9
-videosdk-plugins-cartesia>=1.0.9
-videosdk-plugins-silero>=1.0.9
-videosdk-plugins-turn-detector>=1.0.9
+videosdk-agents>=1.0.26
+videosdk-plugins-google>=1.0.26
+videosdk-plugins-deepgram>=1.0.26
+videosdk-plugins-cartesia>=1.0.26
+videosdk-plugins-silero>=1.0.26
 python-dotenv>=1.1.1
 mcp>=1.0.0
