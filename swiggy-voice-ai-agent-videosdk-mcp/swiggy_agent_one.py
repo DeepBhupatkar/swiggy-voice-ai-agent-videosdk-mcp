@@ -17,11 +17,9 @@ from videosdk.agents import (
     RoomOptions,
     WorkerJob
 )
-from videosdk.plugins.google import GoogleLLM
-from videosdk.plugins.deepgram import DeepgramSTT
-from videosdk.plugins.cartesia import CartesiaTTS
-from videosdk.plugins.silero import SileroVAD
-from videosdk.plugins.turn_detector import TurnDetector, pre_download_model
+from videosdk.agents.plugins import GoogleLLM, DeepgramSTT, CartesiaTTS, SileroVAD
+from videosdk.agents.inference import TurnV2
+
 
 from instructions import SWIGGY_AGENT_INSTRUCTIONS, GREETING, GOODBYE
 from swiggy_mcp import build_swiggy_mcp_servers
@@ -59,7 +57,7 @@ async def entrypoint(ctx: JobContext):
         llm=GoogleLLM(),
         tts=CartesiaTTS(),
         vad=SileroVAD(),
-        turn_detector=TurnDetector(),
+        turn_detector=TurnV2(),
     )
 
     session = AgentSession(
